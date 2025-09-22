@@ -16,6 +16,7 @@ def get_valid_input():
     
 
 def convert_letter_to_word():
+    """This program converts the users letter they inputed into the word"""
     global player_move
     global move
     global comp_move
@@ -38,6 +39,7 @@ def convert_letter_to_word():
         comp_move = 'scissors'
 
 def print_round_result():
+    """This function prints the results of each round"""
     global game_end
     if game_end == 'tied':
         print("It's a tie")
@@ -47,6 +49,7 @@ def print_round_result():
         print("You lost")
 
 def determine_outcome():
+    """This function detirmines the outcome of each game"""
     global comp_move
     global player_move
     global cw
@@ -72,6 +75,7 @@ def determine_outcome():
     round_counter += 1
 
 def print_series_results():
+    """This prints the results of the series"""
     global pw
     global cw
     if pw > cw:
@@ -82,6 +86,7 @@ def print_series_results():
         print(f'Both players scored {pw}. The series ended in a tie.')
 
 def main():
+    """This runs the program"""
     global round_counter 
     global pw 
     global cw 
@@ -94,6 +99,6 @@ def main():
         convert_letter_to_word()
         determine_outcome()
     print_series_results()
-    
+
 if __name__ == "__main__": 
     main() 
