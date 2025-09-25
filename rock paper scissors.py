@@ -1,8 +1,8 @@
 import random
+player_score = 0
+ai_score = 0
 def get_valid_input():
     """This function gets the users input"""
-    global player_move
-    global move
     while True:
         player_move = input("do you wanna do rock(r), paper(p), or scissors(s): ").lower().strip()
             
@@ -11,94 +11,68 @@ def get_valid_input():
 
         else:
             break
-    comp_moves = ["r", "p", "s"]
-    move = random.choice(comp_moves)
+    
+    
+    return player_move
     
 
-def convert_letter_to_word():
+def convert_letter_to_word(letter):
     """This program converts the users letter they inputed into the word"""
-    global player_move
-    global move
-    global comp_move
-    if player_move == 'r':
-        player_move = 'rock'
+    if letter == 'r':
+        return 'rock'
 
-    elif player_move == 'p':
-        player_move = 'paper'
+    elif letter == 'p':
+        return 'paper'
 
-    elif player_move == 's':
-        player_move = 'scissors'
+    elif letter == 's':
+        return 'scissors'
 
-    if move == 'r':
-        comp_move = 'rock'
-
-    elif move == 'p':
-        comp_move = 'paper'
-
-    elif move ==    's':
-        comp_move = 'scissors'
-
-def print_round_result():
-    """This function prints the results of each round"""
-    global game_end
-    if game_end == 'tied':
-        print("It's a tie")
-    elif game_end == 'won':
-        print("You won")
-    elif game_end == 'lost':
-        print("You lost")
-
-def determine_outcome():
+def print_round_result(user, comp, result):
+    global player_score, ai_score
     """This function detirmines the outcome of each game"""
-    global comp_move
-    global player_move
-    global cw
-    global pw
-    global round_counter
-    global game_end
-    if player_move == 'rock' and comp_move == 'rock' or player_move == 'paper' and comp_move == 'paper' or player_move == 'scissors' and comp_move == 'scissors':
-        print(f'You played "{player_move}" the computer played "{comp_move}".')
-        game_end = 'tied'
-        print_round_result()
+    if result == 'tied':
+        print(f"You chose {user}. Comp chose {comp}. It's a tie")
+    elif result == 'won':
+        print(f"You chose {user}. Comp chose {comp}. You won")
+        player_score += 1
+    elif result == 'lost':
+        print(f"You chose {user}. Comp chose {comp}. You lost")
+        ai_score += 1
+    
+def determine_outcome(user, comp):
+    """This function prints the results of each round"""
+    if user == 'rock' and comp == 'rock' or user == 'paper' and comp == 'paper' or user == 'scissors' and comp == 'scissors':
+        return "tied"
 
-    elif player_move == 'rock' and comp_move == 'scissors' or player_move == 'paper' and comp_move == 'rock' or player_move == 'scissors' and comp_move == 'paper':
-        print(f'You played "{player_move}" the computer played "{comp_move}".')
-        game_end = 'won'
-        pw += 1
-        print_round_result()
+    elif user == 'rock' and comp == 'scissors' or user == 'paper' and comp == 'rock' or user == 'scissors' and comp == 'paper':
+        return "won"
 
-    elif player_move == 'rock' and comp_move == 'paper' or player_move == 'paper' and comp_move == 'scissors' or player_move == 'scissors' and comp_move == 'rock':
-        print(f'You played "{player_move}" the computer played "{comp_move}".')
-        game_end = 'lost'
-        cw += 1
-        print_round_result()
-    round_counter += 1
-
-def print_series_results():
+    elif user == 'rock' and comp == 'paper' or user == 'paper' and comp == 'scissors' or user == 'scissors' and comp == 'rock':
+        return 'lost'
+    
+def print_series_results(user_wins, comp_wins):
     """This prints the results of the series"""
-    global pw
-    global cw
-    if pw > cw:
-        print(f'The score was {pw} to {cw}. You won the series.')
-    elif pw < cw:
-        print(f'The score was {pw} to {cw}. You lost the series.')
-    elif pw == cw:
-        print(f'Both players scored {pw}. The series ended in a tie.')
+    if user_wins > comp_wins:
+        print(f'The score was {user_wins} to {comp_wins}. You won the series.')
+    elif user_wins < comp_wins:
+        print(f'The score was {user_wins} to {comp_wins}. You lost the series.')
+    elif user_wins == comp_wins:
+        print(f'Both players scored {user_wins}. The series ended in a tie.')
+
+global comp_moves
+comp_moves = ["r", "p", "s"]
 
 def main():
     """This runs the program"""
-    global round_counter 
-    global pw 
-    global cw 
-    round_counter = 1
-    pw = 0
-    cw = 0
     for i in range(5):
-        print(f'ROUND #{round_counter}')
-        get_valid_input()
-        convert_letter_to_word()
-        determine_outcome()
-    print_series_results()
+        print(f'ROUND #{i+1}')
+        player_move = get_valid_input()
+        move = random.choice(comp_moves)
+        player_move = convert_letter_to_word(player_move)
+        move = convert_letter_to_word(move)
+        result = determine_outcome(player_move, move)
+        print_round_result(player_move, move, result)
+    print_series_results(player_score, ai_score)
 
 if __name__ == "__main__": 
     main() 
